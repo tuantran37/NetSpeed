@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:NetSpeed}",
+            "name": "Debug NetSpeed",
+            "target": "NetSpeed",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug NetSpeed"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:NetSpeed}",
+            "name": "Release NetSpeed",
+            "target": "NetSpeed",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release NetSpeed"
+        }
+    ]
+}
