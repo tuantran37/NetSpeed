@@ -11,7 +11,7 @@ Requires macOS 13 or later and Xcode Command Line Tools to build.
 open dist/NetSpeed.app
 ```
 
-You can move `dist/NetSpeed.app` to Applications with Finder. To launch automatically, add it in System Settings → General → Login Items.
+Move `dist/NetSpeed.app` to Applications with Finder, then open it once. On its first launch, NetSpeed automatically registers to start when you log in, including after a reboot. If macOS requires approval, enable NetSpeed in System Settings → General → Login Items. You can also disable it there; later launches will respect that choice. Running with `swift run` does not register a login item.
 
 ## How it works
 

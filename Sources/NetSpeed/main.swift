@@ -1,5 +1,6 @@
 import AppKit
 import NetworkCore
+import ServiceManagement
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -39,6 +40,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         timer.tolerance = 0.1
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
+        registerForLoginOnFirstLaunch()
+    }
+
+    private func registerForLoginOnFirstLaunch() {
+        // `swift run` isn't an installed app and cannot register as a login item.
+        guard Bundle.main.bundleURL.pathExtension == "app" else { return }
+        let defaults = UserDefaults.standard
+        let registrationKey = "hasRegisteredForLogin"
+        guard !defaults.bool(forKey: registrationKey) else { return }
+
+        let service = SMAppService.mainApp
+        do {
+            if service.status != .enabled && service.status != .requiresApproval {
+                try service.register()
+            }
+            // Register once so disabling NetSpeed in System Settings is respected.
+            defaults.set(true, forKey: registrationKey)
+            if service.status == .requiresApproval {
+                let alert = NSAlert()
+                alert.messageText = "Allow NetSpeed to start at login"
+                alert.informativeText = "Enable NetSpeed in System Settings → General → Login Items to start it automatically after you log in."
+                alert.runModal()
+            }
+        } catch {
+            let alert = NSAlert()
+            alert.messageText = "Couldn't enable launch at login"
+            alert.informativeText = "You can add NetSpeed in System Settings → General → Login Items.\n\n\(error.localizedDescription)"
+            alert.runModal()
+        }
     }
 
     private func update() {
